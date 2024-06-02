@@ -25,7 +25,7 @@ $courses_result = $conn->query($courses_query);
 
 // Fetch courses related to the current user
 $user_courses_query = "SELECT c.course_id, c.name FROM Courses c
-JOIN user_courses uc ON c.course_id = uc.course_id
+JOIN User_Courses uc ON c.course_id = uc.course_id
 WHERE uc.user_id = ?";
 $stmt = $conn->prepare($user_courses_query);
 $stmt->bind_param('i', $user_id);
@@ -44,25 +44,7 @@ $user_courses_result = $stmt->get_result();
 <body>
     <?php include '../templates/header.php'; ?>
     <div class="container">
-        <aside class="sidebar">
-            <nav>
-                <ul>
-                    <li><a href="main.php">Home</a></li>
-                    <li><a href="my_courses.php">My Courses</a></li>
-                    <li><a href="courses.php">All Courses</a></li>
-                </ul>
-                <h3>My Courses</h3>
-                <ul class="course-list">
-                    <?php while($user_course = $user_courses_result->fetch_assoc()): ?>
-                        <li>
-                            <a href="course.php?id=<?php echo $user_course['course_id']; ?>">
-                                <?php echo htmlspecialchars($user_course['name']); ?>
-                            </a>
-                        </li>
-                    <?php endwhile; ?>
-                </ul>
-            </nav>
-        </aside>
+        <?php include '../templates/sidebar.php'; ?>
         <main class="main-content">
             <h1>Welcome, <?php echo htmlspecialchars($full_name); ?>!</h1>
             <h2>All Courses</h2>
